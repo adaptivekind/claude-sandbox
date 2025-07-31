@@ -28,12 +28,17 @@ Run the container
 
 ```sh
 docker run -it \
-  -v $(pwd):/workspace \
+  -v $(pwd):/workspace/${PWD##*/} \
   -v ~/.ai-container/.claude:/root/.claude \
   -v ~/.ai-container/.claude.json:/root/.claude.json \
   --network="host" \
+  -w /workspace/${PWD##*/} \
   claude-sandbox -- /usr/local/bin/claude
 ```
+
+This command starts the folder based on the project direct the container was
+started in so that you can use the same command for multiple projects and Claude
+will maintain separate configuration for each.
 
 Set up alias, e.g. in fish
 
@@ -62,4 +67,10 @@ cclaude mcp add -s user \
   --transport sse markdown-reader http://host.docker.internal:8080/sse
 cclaude mcp add -s user \
   --transport http context7 https://mcp.context7.com/mcp
+```
+
+## Clean up
+
+```
+rm -r ~/.ai-container
 ```
