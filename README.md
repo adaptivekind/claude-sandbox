@@ -13,19 +13,22 @@ colima start
 Build the image
 
 ```sh
-docker build -t claude-sandbox .
+make build
 ```
 
-Create directory on local machine for persistence of Claude in the container.
-When we run the docker image we'll bind the ~/.claude directory in the container
-to this local directory.
+Set up local directories and configuration
 
 ```sh
-mkdir -p ~/.ai-container/.claude
-cp .claude.json ~/.ai-container/.claude.json
+make setup
 ```
 
 Run the container
+
+```sh
+make run
+```
+
+Or run the full docker command:
 
 ```sh
 docker run -it \
@@ -119,6 +122,12 @@ pre-commit run --all-files
 
 ## Clean up
 
+Remove the Docker image:
+```sh
+make clean
 ```
-rm -r ~/.ai-container
+
+Remove image and all local directories:
+```sh
+make clean-all
 ```

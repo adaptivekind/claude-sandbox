@@ -18,6 +18,10 @@ repos:
 
   - repo: local
     hooks:
+      - id: docker-build
+        name: docker build
+        entry: make build
+        language: system
       - id: check-untracked
         name: check-untracked
         entry: scripts/check-untracked.sh
