@@ -20,19 +20,47 @@ jobs:
       - name: Run pre-commit on all files
         run: pre-commit run --all-files
         env:
-          SKIP: docker-build,check-untracked
+          SKIP: docker-build-and-publish,check-untracked
 
-  docker-build:
+  docker-build-and-publish:
     runs-on: ubuntu-latest
     needs: pre-commit
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
-        run: make build
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/claude-sandbox
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Test Docker image
-        run: docker run --rm claude-sandbox --version
+        run: docker run --rm ghcr.io/${{ github.repository_owner }}/claude-sandbox:latest --version
