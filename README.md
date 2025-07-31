@@ -97,6 +97,26 @@ cclaude mcp add -s user \
   --transport http context7 https://mcp.context7.com/mcp
 ```
 
+## Pre-commit Setup
+
+Install pre-commit:
+
+```bash
+pip install pre-commit
+```
+
+Install the git hook scripts:
+
+```bash
+pre-commit install
+```
+
+Run against all files:
+
+```bash
+pre-commit run --all-files
+```
+
 ## Clean up
 
 ```

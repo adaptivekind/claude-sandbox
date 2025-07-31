@@ -2,9 +2,9 @@
   "permissions": {
     "allow": [
       "mcp__markdown-reader__find_markdown_files",
-      "mcp__markdown-reader__read_markdown_file"
+      "mcp__markdown-reader__read_markdown_file",
+      "WebFetch(domain:pre-commit.com)"
     ],
     "deny": []
   }
 }
-
