@@ -31,5 +31,35 @@ docker run -it \
   -v $(pwd):/workspace \
   -v ~/.ai-container/.claude:/root/.claude \
   -v ~/.ai-container/.claude.json:/root/.claude.json \
+  --network="host" \
   claude-sandbox -- /usr/local/bin/claude
+```
+
+Set up alias, e.g. in fish
+
+```fish
+function cclaude
+    docker run -it \
+        -v $(pwd):/workspace \
+        -v ~/.ai-container/.claude:/root/.claude \
+        -v ~/.ai-container/.claude.json:/root/.claude.json \
+        claude-sandbox -- /usr/local/bin/claude $argv
+end
+
+```
+
+Add commands
+
+```
+mkdir ~/.ai-container/.claude/commands
+echo "Apply precepts.md from MCP Reader" > ~/.ai-container/.claude/commands/precepts.md
+```
+
+Add MCP Servers
+
+```
+cclaude mcp add -s user \
+  --transport sse markdown-reader http://host.docker.internal:8080/sse
+cclaude mcp add -s user \
+  --transport http context7 https://mcp.context7.com/mcp
 ```
