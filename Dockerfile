@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:24-alpine
 
 # Install git (often needed for development work)
 RUN apk add --no-cache fish

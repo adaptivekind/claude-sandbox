@@ -16,8 +16,9 @@ Build the image
 docker build -t claude-sandbox .
 ```
 
-Create local file store for persistence of Claude containerised configuration
-between restarts:
+Create directory on local machine for persistence of Claude in the container.
+When we run the docker image we'll bind the ~/.claude directory in the container
+to this local directory.
 
 ```sh
 mkdir -p ~/.ai-container/.claude
@@ -45,9 +46,10 @@ Set up alias, e.g. in fish
 ```fish
 function cclaude
     docker run -it \
-        -v $(pwd):/workspace \
+        -v $(pwd):/workspace/(path basename $PWD) \
         -v ~/.ai-container/.claude:/root/.claude \
         -v ~/.ai-container/.claude.json:/root/.claude.json \
+        -w /workspace/(path basename $PWD) \
         claude-sandbox -- /usr/local/bin/claude $argv
 end
 
