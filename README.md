@@ -1,6 +1,6 @@
 # Claude Sandbox
 
-Docker configuration to run Claude Code in a containerised environment.
+Docker configuration to run Claude Code in a containerised environment. This project provides a restricted sandbox environment for running Claude safely, preventing access to the local machine's file system and other sensitive resources. The containerized setup ensures that Claude operations are isolated from the host system, providing an additional layer of security for development and experimentation.
 
 ### Quick Start
 
