@@ -1,13 +1,16 @@
-FROM node:24-alpine
+FROM debian:bookworm-slim
 
-RUN apk add --no-cache zsh
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+  nodejs \
+  npm \
+  zsh
 
 # Install Claude Code globally
 RUN npm install -g @anthropic-ai/claude-code
 
 # Create non-root user
-RUN addgroup -g 1001 -S appuser && \
-  adduser -S appuser -u 1001 -G appuser
+RUN adduser appuser
 
 # Create directories and set permissions
 COPY .zshrc /home/appuser/.zshrc
@@ -20,5 +23,4 @@ RUN chown -R appuser:appuser /workspace
 # Switch to non-root user
 USER appuser
 
-# Set default command to fish for interactive use
-CMD ["/bin/zsh"]
+ENTRYPOINT ["/usr/local/bin/claude"]

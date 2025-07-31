@@ -1,8 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls:*)"
+      "mcp__markdown-reader__find_markdown_files",
+      "mcp__markdown-reader__read_markdown_file"
     ],
     "deny": []
   }
 }
+

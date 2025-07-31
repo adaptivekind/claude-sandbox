@@ -30,30 +30,56 @@ Run the container
 ```sh
 docker run -it \
   -v $(pwd):/workspace/${PWD##*/} \
-  -v ~/.ai-container/.claude:/home/appuser/.claude \
+  -v ~/.ai-container/.claude:/home/appuser/.claude           \
   -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
-  --network="host" \
-  -w /workspace/${PWD##*/} \
-  claude-sandbox -- /usr/local/bin/claude
+  --network="host"                \
+  -w /workspace/${PWD##*/}        \
+  claude-sandbox
 ```
 
 This command starts the folder based on the project direct the container was
 started in so that you can use the same command for multiple projects and Claude
 will maintain separate configuration for each.
 
-Set up alias, e.g. in fish
+Set up alias.
 
+<details>
+<summary>bash alias</summary>
+
+Add this to your `~/.bashrc` or `~/.bash_profile`:
+
+```bash
+alias claude-box='docker run -it  \
+  -v $(pwd):/workspace/${PWD##*/} \
+  -v ~/.ai-container/.claude:/home/appuser/.claude \
+  -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
+  --network="host"                \
+  -w /workspace/${PWD##*/}        \
+  claude-sandbox'
+```
+
+Then reload your shell configuration:
+
+```bash
+source ~/.bashrc
+```
+
+</details>
+
+<details>
+<summary>fish alias</summary>
 ```fish
-function cclaude
+function claude-box
     docker run -it \
-        -v $(pwd):/workspace/(path basename $PWD) \
+        -v $(pwd):/workspace/(path basename $PWD)        \
         -v ~/.ai-container/.claude:/home/appuser/.claude \
         -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
-        -w /workspace/(path basename $PWD) \
-        claude-sandbox -- /usr/local/bin/claude $argv
+        -w /workspace/(path basename $PWD)               \
+        claude-sandbox $argv
 end
-
 ```
+
+</details>
 
 Add commands
 
