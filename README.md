@@ -19,8 +19,8 @@ docker build -t claude-sandbox .
 Set up local directories and configuration
 
 ```sh
-mkdir -p ~/.ai-container/.claude
-cp .claude.json ~/.ai-container/.claude.json
+mkdir -p ~/.claude-sandbox/.claude
+cp .claude.json ~/.claude-sandbox/.claude.json
 ```
 
 Run the container
@@ -28,8 +28,8 @@ Run the container
 ```sh
 docker run -it \
   -v $$(pwd):/workspace/$${PWD##*/} \
-  -v ~/.ai-container/.claude:/home/appuser/.claude \
-  -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
+  -v ~/.claude-sandbox/.claude:/home/appuser/.claude \
+  -v ~/.claude-sandbox/.claude.json:/home/appuser/.claude.json \
   --network="host" \
   -w /workspace/$${PWD##*/} \
   $(IMAGE_NAME)
@@ -40,8 +40,8 @@ Or run the full docker command:
 ```sh
 docker run -it \
   -v $(pwd):/workspace/${PWD##*/} \
-  -v ~/.ai-container/.claude:/home/appuser/.claude           \
-  -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
+  -v ~/.claude-sandbox/.claude:/home/appuser/.claude           \
+  -v ~/.claude-sandbox/.claude.json:/home/appuser/.claude.json \
   --network="host"                \
   -w /workspace/${PWD##*/}        \
   claude-sandbox
@@ -61,8 +61,8 @@ Add this to your `~/.bashrc` or `~/.bash_profile`:
 ```bash
 alias claude-box='docker run -it  \
   -v $(pwd):/workspace/${PWD##*/} \
-  -v ~/.ai-container/.claude:/home/appuser/.claude \
-  -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
+  -v ~/.claude-sandbox/.claude:/home/appuser/.claude \
+  -v ~/.claude-sandbox/.claude.json:/home/appuser/.claude.json \
   --network="host"                \
   -w /workspace/${PWD##*/}        \
   claude-sandbox'
@@ -83,8 +83,8 @@ source ~/.bashrc
 function claude-box
     docker run -it \
         -v $(pwd):/workspace/(path basename $PWD)        \
-        -v ~/.ai-container/.claude:/home/appuser/.claude \
-        -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
+        -v ~/.claude-sandbox/.claude:/home/appuser/.claude \
+        -v ~/.claude-sandbox/.claude.json:/home/appuser/.claude.json \
         -w /workspace/(path basename $PWD)               \
         claude-sandbox $argv
 end
@@ -95,8 +95,8 @@ end
 Add commands
 
 ```
-mkdir ~/.ai-container/.claude/commands
-echo "Apply precepts.md from MCP Reader" > ~/.ai-container/.claude/commands/precepts.md
+mkdir ~/.claude-sandbox/.claude/commands
+echo "Apply precepts.md from MCP Reader" > ~/.claude-sandbox/.claude/commands/precepts.md
 ```
 
 Add MCP Servers

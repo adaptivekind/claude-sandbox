@@ -15,8 +15,8 @@ build: ## Build the Docker image
 run: ## Run the container with current directory mounted
 	docker run -it \
 		-v $$(pwd):/workspace/$${PWD##*/} \
-		-v ~/.ai-container/.claude:/home/appuser/.claude \
-		-v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
+		-v ~/.claude-sandbox/.claude:/home/appuser/.claude \
+		-v ~/.claude-sandbox/.claude.json:/home/appuser/.claude.json \
 		--network="host" \
 		-w /workspace/$${PWD##*/} \
 		$(IMAGE_NAME)
@@ -29,12 +29,12 @@ list-apt-versions: ## Run the a debian container
 		sh -c "apt-get update ; apt list -a nodejs zsh npm zsh"
 
 setup: ## Set up the local .claude directory and config
-	mkdir -p ~/.ai-container/.claude
-	cp .claude.json ~/.ai-container/.claude.json
+	mkdir -p ~/.claude-sandbox/.claude
+	cp .claude.json ~/.claude-sandbox/.claude.json
 
 clean: ## Remove the Docker image
 	docker rmi $(IMAGE_NAME) || true
 
 clean-all: ## Remove image and clean up local directories
 	docker rmi $(IMAGE_NAME) || true
-	rm -r ~/.ai-container
+	rm -r ~/.claude-sandbox
