@@ -4,11 +4,17 @@ Docker configuration to run Claude Code in a containerised environment.
 
 ### Quick Start
 
-Start container runtime, e.g. [Colima](https://github.com/abiosoft/colima)
+Start container runtime, e.g. [Colima](https://github.com/abiosoft/colima) or [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+<details>
+
+<summary>Colima start</summary>
 
 ```sh
 colima start
 ```
+
+</details>
 
 Build the image
 
@@ -27,18 +33,6 @@ Run the container
 
 ```sh
 docker run -it \
-  -v $$(pwd):/workspace/$${PWD##*/} \
-  -v ~/.claude-sandbox/.claude:/home/appuser/.claude \
-  -v ~/.claude-sandbox/.claude.json:/home/appuser/.claude.json \
-  --network="host" \
-  -w /workspace/$${PWD##*/} \
-  $(IMAGE_NAME)
-```
-
-Or run the full docker command:
-
-```sh
-docker run -it \
   -v $(pwd):/workspace/${PWD##*/} \
   -v ~/.claude-sandbox/.claude:/home/appuser/.claude           \
   -v ~/.claude-sandbox/.claude.json:/home/appuser/.claude.json \
@@ -51,7 +45,7 @@ This command starts the folder based on the project direct the container was
 started in so that you can use the same command for multiple projects and Claude
 will maintain separate configuration for each.
 
-Set up alias.
+Set up shell alias go `claude-box`
 
 <details>
 <summary>bash alias</summary>
@@ -92,25 +86,25 @@ end
 
 </details>
 
-Add commands
+You can register custom commands
 
 ```
 mkdir ~/.claude-sandbox/.claude/commands
 echo "Apply precepts.md from MCP Reader" > ~/.claude-sandbox/.claude/commands/precepts.md
 ```
 
-Add MCP Servers
+Add you can add MCP Servers
 
 ```
-cclaude mcp add -s user \
+claude-box mcp add -s user \
   --transport sse markdown-reader http://host.docker.internal:8080/sse
-cclaude mcp add -s user \
+claude-box mcp add -s user \
   --transport http context7 https://mcp.context7.com/mcp
 ```
 
-## Pre-commit Setup
+## Development
 
-Install pre-commit:
+Install pre-commit for local lint and pre-commit checks.
 
 ```bash
 pip install pre-commit
@@ -122,7 +116,7 @@ Install the git hook scripts:
 pre-commit install
 ```
 
-Run against all files:
+Run against all files if you need to do a full check:
 
 ```bash
 pre-commit run --all-files
@@ -136,7 +130,8 @@ Remove the Docker image:
 make clean
 ```
 
-Remove image and all local directories:
+Remove image and all local directories. This will remove all session context and
+memory for Claude from running with this container.
 
 ```sh
 make clean-all
