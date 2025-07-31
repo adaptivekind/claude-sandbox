@@ -13,19 +13,26 @@ colima start
 Build the image
 
 ```sh
-make build
+docker build -t claude-sandbox .
 ```
 
 Set up local directories and configuration
 
 ```sh
-make setup
+mkdir -p ~/.ai-container/.claude
+cp .claude.json ~/.ai-container/.claude.json
 ```
 
 Run the container
 
 ```sh
-make run
+docker run -it \
+  -v $$(pwd):/workspace/$${PWD##*/} \
+  -v ~/.ai-container/.claude:/home/appuser/.claude \
+  -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
+  --network="host" \
+  -w /workspace/$${PWD##*/} \
+  $(IMAGE_NAME)
 ```
 
 Or run the full docker command:
@@ -71,6 +78,7 @@ source ~/.bashrc
 
 <details>
 <summary>fish alias</summary>
+
 ```fish
 function claude-box
     docker run -it \
@@ -123,11 +131,13 @@ pre-commit run --all-files
 ## Clean up
 
 Remove the Docker image:
+
 ```sh
 make clean
 ```
 
 Remove image and all local directories:
+
 ```sh
 make clean-all
 ```
