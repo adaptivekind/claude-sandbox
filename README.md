@@ -30,8 +30,8 @@ Run the container
 ```sh
 docker run -it \
   -v $(pwd):/workspace/${PWD##*/} \
-  -v ~/.ai-container/.claude:/root/.claude \
-  -v ~/.ai-container/.claude.json:/root/.claude.json \
+  -v ~/.ai-container/.claude:/home/appuser/.claude \
+  -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
   --network="host" \
   -w /workspace/${PWD##*/} \
   claude-sandbox -- /usr/local/bin/claude
@@ -47,8 +47,8 @@ Set up alias, e.g. in fish
 function cclaude
     docker run -it \
         -v $(pwd):/workspace/(path basename $PWD) \
-        -v ~/.ai-container/.claude:/root/.claude \
-        -v ~/.ai-container/.claude.json:/root/.claude.json \
+        -v ~/.ai-container/.claude:/home/appuser/.claude \
+        -v ~/.ai-container/.claude.json:/home/appuser/.claude.json \
         -w /workspace/(path basename $PWD) \
         claude-sandbox -- /usr/local/bin/claude $argv
 end

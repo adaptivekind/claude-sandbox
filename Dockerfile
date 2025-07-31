@@ -1,15 +1,24 @@
 FROM node:24-alpine
 
-# Install git (often needed for development work)
-RUN apk add --no-cache fish
+RUN apk add --no-cache zsh
 
 # Install Claude Code globally
 RUN npm install -g @anthropic-ai/claude-code
 
-COPY .config/fish /root/.config/fish
+# Create non-root user
+RUN addgroup -g 1001 -S appuser && \
+  adduser -S appuser -u 1001 -G appuser
 
-# Create app directory
+# Create directories and set permissions
+COPY .zshrc /home/appuser/.zshrc
+RUN chown -R appuser:appuser /home/appuser
+
+# Create app directory and set ownership
 WORKDIR /workspace
+RUN chown -R appuser:appuser /workspace
 
-# Set default command to bash for interactive use
-CMD ["/usr/bin/fish"]
+# Switch to non-root user
+USER appuser
+
+# Set default command to fish for interactive use
+CMD ["/bin/zsh"]
