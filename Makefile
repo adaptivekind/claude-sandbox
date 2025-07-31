@@ -21,6 +21,15 @@ run: ## Run the container with current directory mounted
 		-w /workspace/$${PWD##*/} \
 		$(IMAGE_NAME)
 
+run-published: ## Run the container with current directory mounted
+	docker run -it \
+		-v $$(pwd):/workspace/$${PWD##*/} \
+		-v ~/.claude-sandbox/.claude:/home/appuser/.claude \
+		-v ~/.claude-sandbox/.claude.json:/home/appuser/.claude.json \
+		--network="host" \
+		-w /workspace/$${PWD##*/} \
+		ghcr.io/adaptivekind/claude-sandbox:latest
+
 run-debian: ## Run the a debian container
 	docker run -it debian:bookworm-slim
 
